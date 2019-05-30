@@ -1,8 +1,13 @@
 package java1000.consoleEx9;
 
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class ConsoleEx9 {
 	static String[] argArr; // 입력한 매개변수를 담기위한 문자열배열
@@ -135,7 +140,8 @@ class ConsoleEx9 {
 	}
 
 	public static void cd() throws IOException {
-
+		
+		
 		if (argArr.length == 1) {
 			System.out.println(curDir);
 			return;
@@ -144,7 +150,7 @@ class ConsoleEx9 {
 			return;
 		}
 
-		String subDir = argArr[1];
+		String subDir = argArr[1].trim();
 		
 		if(subDir.equals(".")) {
 			System.out.println(curDir);
@@ -154,18 +160,43 @@ class ConsoleEx9 {
 			curDir = pFile;
 			System.out.println(curDir);
 			return;
+			
+			//cd ???? 일 때.
 		}else {
-			File[] dirList = curDir.getParentFile().listFiles();
-		
-			for(File dir : dirList) {
-				if(dir.getName().equals(subDir)) {
-					curDir = new File(curDir.getCanonicalPath() + "\\"+ subDir);
-					System.out.println(curDir);
+			//아오 잘못함!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			File parentFile = curDir.getParentFile().getParentFile();
+//			File[] dirList = parentFile.listFiles();
+//		
+//			for(File dir : dirList) {
+//				if(dir.getName().equals(subDir)) {
+//					curDir = new File(parentFile.getCanonicalPath() + "//"+ subDir);
+//					System.out.println(curDir);
+//					break;
+//				}else {
+//					continue;
+//				}
+//			}
+			
+			// ???? 는 subDir에 있다.
+			// ???? 가 현재 디렉터리의 하위폴더인지 확인한다. (isDirectory) , (listFile)
+			//  --? 현재디렉터리를 언제 다시 재할당해주지? cd .. 했을 때도 재할당해줘야하고.
+			// 하위폴더가 아니면 유효하지않은파일입니다 출력.
+			// 하위폴더라면 curDir를 subF로 바꾼다.
+			
+			File[] files = curDir.listFiles(); //현재 파일의 하위파일들.
+			File subF = new File(curDir.getCanonicalPath() + "/"+subDir);
+			
+			for(File file : files) {
+				if(file.equals(subF) && subF.isDirectory()) {
+					curDir = subF;
 					break;
-				}else {
-					continue;
 				}
 			}
+			
+			if(!curDir.equals(subF)) {
+				System.out.println("유효하지않은 파일입니다.");
+			}
+			
 			
 		}
 		

@@ -94,7 +94,7 @@ class ConsoleEx7 {
             String fileName = argArr[1]; 
 
             File tmp = new File(curDir, fileName); 
-
+            System.out.println(tmp);
             if(tmp.exists()) { 
                   FileReader fr = new FileReader(tmp); 
                   BufferedReader br = new BufferedReader(fr); 

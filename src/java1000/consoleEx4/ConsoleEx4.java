@@ -25,7 +25,6 @@ class ConsoleEx4 {
 		// 찾아보려면? stringPropertyName(); 써서 user.dir있나 보자아아아앙
 		Properties props = System.getProperties();
 		String str = props.getProperty("user.dir");
-//		props.getProperty("ASD");
 
 		curDir = new File(str);
 	}
