@@ -1,11 +1,12 @@
 package java1000.TypingGameEx2;
 
 import java.awt.Toolkit;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Vector;
 
 class TypingGameEx2 {
-	Vector words = new Vector<>();
+	Vector<Word> words = new Vector<>();
 	String[] data = { "A", "B", "C", "D", "F", "G", "H", "Q", "W" };
 	int interval = 2 * 1000; // 2초
 
@@ -21,7 +22,7 @@ class TypingGameEx2 {
 		game.wg.start();
 		game.wd.start();
 
-		Vector words = game.words;
+		Vector<Word> words = game.words;
 
 		while (true) {
 			System.out.println("LIFE:" + game.life + " SCORE:" + game.score);
@@ -51,16 +52,28 @@ class TypingGameEx2 {
 			 * (입력한 단어의 글자수 * 남은시간 * 50으로 점수를 계산한다.)
 			 * 
 			 */
-			
-			for(Object name : words) {
-				if(input.equals(name)) {
-					System.out.println("sad");
-					words.remove(name);
+			Iterator<Word> iter = words.iterator();
+			while(iter.hasNext()) {
+				Word word = iter.next();
+				String wordStr = word.toString();
+				System.out.println(wordStr);
+				if(wordStr.equals(input)) {
+					iter.remove();
+					System.out.println("삭제.");
 					Toolkit tool = Toolkit.getDefaultToolkit();
 					tool.beep();
+					game.score += wordStr.length() * word.y * 50;
 				}
-				System.out.println("SADK");
 			}
+//			for(Object name : words) {
+//				if(input.equals(name)) {
+//					System.out.println("sad");
+//					words.remove(name);
+//					Toolkit tool = Toolkit.getDefaultToolkit();
+//					tool.beep();
+//				}
+//				System.out.println("SADK");
+//			}
 
 		} // while(true)
 	} // main
@@ -85,21 +98,57 @@ class TypingGameEx2 {
 
 	class WordDropper extends Thread {
 		public void run() {
-
-			for(Object word : words) {
-				Word w = (Word) word;
-				w.y--;
-				if(w.y <= 0) {
-					words.remove(word);
-					life--;
-					if(life == 0) {
-						System.out.println("LIFE : " + life + "  SCORE : "+score);
-						System.exit(0);
+//			for(Object word : words) {
+//				Word w = (Word) word;
+//				w.y--;
+//				if(w.y <= 0) {
+//					words.remove(word);
+//					life--;
+//					if(life == 0) {
+//						System.out.println("LIFE : " + life + "  SCORE : "+score);
+//						System.exit(0);
+//					}
+//				}
+//				delay(interval);
+//				System.out.println(w.y);
+//			}
+			
+//			Iterator<Word> iter = words.iterator();
+//			while(iter.hasNext()) {
+//				
+//				Word word = iter.next();
+//				
+//				word.y = word.y - 1;
+//				System.out.println("SAD"+word.y);
+//				
+//				words.add(word);
+//				
+//				if(word.y <= 0) {
+//					iter.remove();
+//					life--;
+//					if(life == 0) {
+//						System.out.println("LIFE : "+life + ", "+" SCORE : "+score);
+//					}
+//				}
+//				delay(1000);
+//			}
+			
+			while(true) {
+				Iterator<Word> iter = words.iterator();
+				while(iter.hasNext()) {
+					Word word = iter.next();
+					word.y--;
+					if(word.y <= 0) {
+						iter.remove();
+						life--;
+						
+						if(life == 0) {
+							System.out.println("LIFE : "+life+"\t"+"SCORE : "+score);
+							System.exit(0);
+						}
 					}
 				}
-				delay(interval);
-				System.out.println(w.y);
-				
+				delay(1000);
 			}
 			/*
 			 * 
@@ -136,7 +185,7 @@ class TypingGameEx2 {
 
 		public String toString() {
 
-			return word;
+			return word+y;
 		}
 	} // class Word
 } // TypingGameEx2
