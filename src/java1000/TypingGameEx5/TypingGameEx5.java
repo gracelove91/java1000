@@ -226,7 +226,7 @@ class TypingGameEx5 extends Frame {
 				String[] data = LEVEL[getCurLevel()].data;
 
 				int rand = (int) (Math.random() * data.length);
-				boolean isVirus = false;
+				
 				/*
 				 * 
 				 * 다음의 코드를 완성하세요.
@@ -237,6 +237,8 @@ class TypingGameEx5 extends Frame {
 				 * 
 				 * boolean isVirus = (이곳에 알맞은 수식을 넣으세요.);
 				 */
+				
+				boolean isVirus = (int)(Math.random() * 10) + 1 / 10 != 0 ? false : true;
 
 				Word word = new Word(data[rand], isVirus);
 				words.add(word);
